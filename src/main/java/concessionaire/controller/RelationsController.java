@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package concessionnaire.controller;
+package concessionaire.controller;
 
 /**
  *
  * @author user
  */
-public class IndividualController {
+public class RelationsController {
     
 }
