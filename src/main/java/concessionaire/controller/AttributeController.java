@@ -9,6 +9,9 @@ package concessionaire.controller;
  *
  * @author user
  */
-public class AttributeController {
+public class AttributeController extends GeneralController {
     
+    public void getSameIdentities(String attribute, String attributeValue) {
+        
+    }
 }

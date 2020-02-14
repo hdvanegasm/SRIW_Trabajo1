@@ -9,6 +9,9 @@ package concessionaire.controller;
  *
  * @author user
  */
-public class IndividualController {
-    
+public class IndividualController extends GeneralController {
+
+    public void getRelationsFromIndividual(String individual) {
+        
+    }
 }

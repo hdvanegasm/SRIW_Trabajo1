@@ -9,6 +9,19 @@ package concessionaire.controller;
  *
  * @author user
  */
-public class StatisticsController {
+public class StatisticsController extends GeneralController {
+
+    public void getStatisticsFromClassAttribute(String entity, String attribute) {
+        
+    }
+    
+    public void getStatisticsNumericFilter(String entity, String attribute, int lowValue, int highValue) {
+        
+    }
+    
+    public void getStatisticsStringFilter(String entity, String attribute, String pattern) {
+        
+    }
+    
     
 }
