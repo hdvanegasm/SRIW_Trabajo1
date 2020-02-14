@@ -9,6 +9,9 @@ package concessionaire.controller;
  *
  * @author user
  */
-public class RelationsController {
+public class RelationsController extends GeneralController {
     
+    public void findRelation(String entity1, String entity2, boolean indirect) {
+        
+    }
 }
