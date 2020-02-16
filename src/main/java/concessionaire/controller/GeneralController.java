@@ -91,7 +91,6 @@ public class GeneralController {
     }
 
     public ArrayList<String> getInstancesFromClass(String entity) {
-        
         ResultSet sameClases = getEquivalentClasses(entity);
         ArrayList<String> individualsFullResult = new ArrayList<>();
         

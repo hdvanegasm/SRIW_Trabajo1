@@ -107,4 +107,23 @@ public class SparqlQuery {
                     + "}";
         }
     }
+    
+     public static String getIndividualWithSameValueQuery(String propertyURI, String value, String entity, String graph) {
+         if (graph.equals("DEFAULT")) {
+            return "SELECT ?individual\n"
+                    + "WHERE {\n"
+                    + "	?individual a <" + entity + "> .\n"
+                    + "	?individual <" + propertyURI + "> ?value.\n"
+                    + "	FILTER REGEX( str(?value), '" + value + "') .\n"
+                    + "}";
+        } else {
+            return "SELECT ?individual\n"
+                    + "FROM <" + graph + ">\n"
+                    + "WHERE {\n"
+                    + "	?individual a <" + entity + "> .\n"
+                    + "	?individual <" + propertyURI + "> ?value.\n"
+                    + "	FILTER REGEX( str(?value), '" + value + "') .\n"
+                    + "}";
+        }
+    }
 }
