@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package concessionaire.gui;
-
+import concessionaire.controller.AttributeController;
 /**
  *
  * @author user
@@ -165,7 +165,9 @@ public class AttributeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        AttributeController controller = new AttributeController();
+        
+        // Este controlador es el que tiene los metodos para realizar las consultas
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
