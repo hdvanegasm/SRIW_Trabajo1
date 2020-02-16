@@ -11,18 +11,100 @@ package concessionaire.controller;
  */
 public class SparqlQuery {
 
-    public static String getCarsQuery(String entity, String graph) {
+    public static String getIndividualFromClassQuery(String entity, String graph) {
         if (graph.equals("DEFAULT")) {
-            return "SELECT ?car\n"
-                + "WHERE {\n"
-                + "	?car a <" + entity + "> .\n"
-                + "}";
+            return "SELECT ?individual\n"
+                    + "WHERE {\n"
+                    + "	?individual a <" + entity + "> .\n"
+                    + "}";
         } else {
-            return "SELECT ?car\n"
-                + "FROM <"+ graph +">\n"
-                + "WHERE {\n"
-                + "	?car a <" + entity + ">.\n"
-                + "}";
+            return "SELECT ?individual\n"
+                    + "FROM <" + graph + ">\n"
+                    + "WHERE {\n"
+                    + "	?individual a <" + entity + ">.\n"
+                    + "}";
+        }
+    }
+
+    public static String getIndividualAttributesQuery(String individual, String graph) {
+        if (graph.equals("DEFAULT")) {
+            return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                    + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                    + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                    + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                    + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                    + "SELECT ?property ?value \n"
+                    + "WHERE {\n"
+                    + "<" + individual + "> ?property ?value.\n"
+                    + "    ?property a owl:DatatypeProperty. \n"
+                    + "}";
+        } else {
+            return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                    + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                    + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                    + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                    + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                    + "SELECT ?property ?value \n"
+                    + "FROM <" + graph + ">\n"
+                    + "WHERE {\n"
+                    + "<" + individual + "> ?property ?value.\n"
+                    + "    ?property a owl:DatatypeProperty. \n"
+                    + "}";
+        }
+    }
+    
+    
+    public static String getIndividualRelationsQuery(String individual, String graph) {
+        if (graph.equals("DEFAULT")) {
+            return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                    + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                    + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                    + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                    + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                    + "SELECT ?property ?value \n"
+                    + "WHERE {\n"
+                    + "<" + individual + "> ?property ?value.\n"
+                    + "    ?property a owl:ObjectProperty. \n"
+                    + "}";
+        } else {
+            return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                    + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                    + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                    + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                    + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                    + "SELECT ?property ?value \n"
+                    + "FROM <" + graph + ">\n"
+                    + "WHERE {\n"
+                    + "<" + individual + "> ?property ?value.\n"
+                    + "    ?property a owl:ObjectProperty. \n"
+                    + "}";
+        }
+    }
+    
+    
+    public static String getIndividualEquivalencesQuery(String individual, String graph) {
+        if (graph.equals("DEFAULT")) {
+            return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                    + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                    + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                    + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                    + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                    + "SELECT ?otro_individual \n"
+                    + "WHERE {\n"
+                    + "<" + individual + "> owl:sameAs ?otro_individual.\n"
+                    + "}";
+        } else {
+            return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                    + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                    + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                    + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                    + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                    + "SELECT ?otro_individual \n"
+                    + "FROM <" + graph + ">\n"
+                    + "WHERE {\n"
+                    + "{ <" + individual + "> owl:sameAs ?otro_individual. }\n"
+                    + "UNION { ?otro_individual owl:sameAs " + "<" + individual + ">. }\n"
+                    + "}";
         }
     }
 }

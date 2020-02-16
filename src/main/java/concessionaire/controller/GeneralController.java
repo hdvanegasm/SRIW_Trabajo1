@@ -5,6 +5,7 @@
  */
 package concessionaire.controller;
 
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -12,6 +13,7 @@ import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.InfModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -47,9 +49,13 @@ public class GeneralController {
         return resultSet;
     }
 
-    public DefaultListModel getClasses() {
-        String query = "SELECT DISTINCT ?clase \n"
-                + "FROM <http://35.224.217.230:8890/ontologies/concesionario>\n"
+    public ArrayList getClasses() {
+        String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                + "SELECT DISTINCT ?clase \n"
                 + "WHERE {\n"
                 + "	?clase rdf:type owl:Class .\n"
                 + "	?clase owl:equivalentClass ?otra_clase .\n"
@@ -58,20 +64,71 @@ public class GeneralController {
 
         ResultSet allClasses = this.executeQueryToIntegration(query);
 
-        DefaultListModel listModel = new DefaultListModel();
+        ArrayList<String> list = new ArrayList<String>();
         while (allClasses.hasNext()) {
             QuerySolution soln = allClasses.nextSolution();
-            listModel.addElement(soln.getResource("?x"));
+            list.add(soln.getResource("?clase").toString());
         }
-        return listModel;
+        return list;
+    }
+    
+    public ResultSet getEquivalentClasses(String uriClass) {
+        String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                + "SELECT DISTINCT ?clase_igual \n"
+                + "WHERE {\n"
+                + "	<"+ uriClass +"> owl:equivalentClass ?clase_igual .\n"
+                + "}";
+        
+        return this.executeQueryToIntegration(query);
     }
 
     public void getAttributeFromClass(String entity) {
 
     }
 
-    public void getInstancesFromClass(String entity, boolean indirectQuery, String filter) {
+    public ArrayList<String> getInstancesFromClass(String entity) {
+        
+        ResultSet sameClases = getEquivalentClasses(entity);
+        ArrayList<String> individualsFullResult = new ArrayList<>();
+        
+        while (sameClases.hasNext()) {
+            System.out.println("--------------------------------------------------");
 
+            QuerySolution solution = sameClases.nextSolution();
+            String individualResult = solution.get("clase_igual").toString();
+            ResultSet resultQuery = null;
+            if (individualResult.contains("concesionario.owl")) {
+                String query = SparqlQuery.getIndividualFromClassQuery(individualResult, "http://35.224.217.230:8890/ontologies/concesionario");
+                resultQuery = this.executeQueryToEndPoint(query, "http://35.224.217.230:8890/sparql");
+                
+            } else if (individualResult.contains("resource/vocab")) {
+                String query = SparqlQuery.getIndividualFromClassQuery(individualResult, "DEFAULT");
+                try {
+                    resultQuery = this.executeQueryToEndPoint(query, "http://sriw-trabajo1-d2r.herokuapp.com/sparql");
+                } catch (Exception ex) {
+                    System.out.println("Error de conexion con servidor D2R");
+                }
+            } else if (individualResult.contains("dbpedia")) {
+                String query = SparqlQuery.getIndividualFromClassQuery(individualResult, "DEFAULT");
+                resultQuery = this.executeQueryToEndPoint(query, "http://dbpedia.org/sparql");
+            } else {
+                String query = SparqlQuery.getIndividualFromClassQuery(individualResult, "http://35.224.217.230:8890/ontologies/concesionario.rdf");
+                resultQuery = this.executeQueryToEndPoint(query, "http://35.224.217.230:8890/sparql");
+            }
+
+            if (resultQuery != null) {
+               while(resultQuery.hasNext()) {
+                   QuerySolution resultIndividual = resultQuery.nextSolution();
+                   individualsFullResult.add(resultIndividual.getResource("individual").toString());
+               }
+            }            
+        }
+        
+        return individualsFullResult;
     }
 
     public void getAttributesFromInstance(String instance) {
