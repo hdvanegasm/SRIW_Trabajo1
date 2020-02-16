@@ -71,13 +71,17 @@ public class Main {
                 + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
                 + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
                 + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
-                + "SELECT *\n"
+                + "SELECT DISTINCT ?clase \n"
                 + "WHERE {\n"
-                + "	onto:Carro owl:equivalentClass ?another_class\n"
+                + "	?clase rdf:type owl:Class .\n"
+                + "	?clase owl:equivalentClass ?otra_clase .\n"
+                + "	FILTER(?clase != ?otra_clase)\n"
                 + "}";
 
         ResultSet result = controller.executeQueryToIntegration(querys);
+        ResultSetFormatter.out(System.out, result);
 
+        
         while (result.hasNext()) {
             System.out.println("--------------------------------------------------");
 
@@ -110,30 +114,7 @@ public class Main {
                 ResultSetFormatter.out(System.out, resultQuery);
             }
         }
-
-        //GeneralController GC=new GeneralController();
-        //GC.getClasses();
-        /*
-        System.out.println ("Read model consesionario.owl from virtuoso");
-        //En mi virtuoso tengo la ontologÃ­a como http://35.224.217.230:8890/ontologies/concesionario
-        VirtModel ModelRobots = VirtModel.openDatabaseModel("http://35.224.217.230:8890/ontologies/concesionario", "jdbc:virtuoso://35.224.217.230:1111/charset=UTF-8", "dba", "virtuoso2020");
-        System.out.println ("\t\t\t Done.");
-        String queryString =        
-                "PREFIX concesionario: <http://sriw-trabajo1-d2r.herokuapp.com/ontologies/concesionario.owl#>"+
-                    "SELECT DISTINCT ?a ?b "+
-                    "WHERE { "+
-                    "?a concesionario:ensamblado_en ?b. "+
-                    "}\n ";
-
-        Query query = QueryFactory.create(queryString);
-
-        // Execute the query and obtain results
-        QueryExecution qe = QueryExecutionFactory.create(query, ModelRobots);
-        ResultSet results =  qe.execSelect();
-        System.out.println("Query Result:");
-        // Output query results    
-        ResultSetFormatter.out(System.out, results, query);
-         */
+         
     }
 
 }

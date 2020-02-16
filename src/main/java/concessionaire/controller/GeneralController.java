@@ -5,6 +5,7 @@
  */
 package concessionaire.controller;
 
+import javax.swing.DefaultListModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -33,7 +34,7 @@ public class GeneralController {
 
         Query query = QueryFactory.create(queryString);
         QueryExecution qexec = QueryExecutionFactory.create(query, inferenceModel);
-        
+
         ResultSet results = qexec.execSelect();
         return results;
     }
@@ -46,8 +47,23 @@ public class GeneralController {
         return resultSet;
     }
 
-    public void getClasses() {
+    public DefaultListModel getClasses() {
+        String query = "SELECT DISTINCT ?clase \n"
+                + "FROM <http://35.224.217.230:8890/ontologies/concesionario>\n"
+                + "WHERE {\n"
+                + "	?clase rdf:type owl:Class .\n"
+                + "	?clase owl:equivalentClass ?otra_clase .\n"
+                + "	FILTER(?clase != ?otra_clase)\n"
+                + "}";
 
+        ResultSet allClasses = this.executeQueryToIntegration(query);
+
+        DefaultListModel listModel = new DefaultListModel();
+        while (allClasses.hasNext()) {
+            QuerySolution soln = allClasses.nextSolution();
+            listModel.addElement(soln.getResource("?x"));
+        }
+        return listModel;
     }
 
     public void getAttributeFromClass(String entity) {
