@@ -183,9 +183,16 @@ public class AttributeGUI extends javax.swing.JFrame {
     private void findOtherEntitiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findOtherEntitiesActionPerformed
         String selectedAttribute = attributesList.getSelectedValue();
         if ( selectedAttribute != null ) {
-            String propertyURI = selectedAttribute.substring(0,selectedAttribute.lastIndexOf(':'));
-            String valueURI = selectedAttribute.substring(selectedAttribute.lastIndexOf(':'), selectedAttribute.length());
-            String value = valueURI.substring(valueURI.lastIndexOf('[') + 1, valueURI.lastIndexOf(']'));
+            String propertyURI = selectedAttribute.substring(0,selectedAttribute.indexOf('[')-1);
+            String valueURI = selectedAttribute.substring(selectedAttribute.indexOf('[')+1 , selectedAttribute.length());
+            
+            String value;
+            if (valueURI.contains("^")) {
+                value = valueURI.substring(valueURI.lastIndexOf('[') + 1, valueURI.indexOf('^'));    
+            } else {
+                value = valueURI.substring(valueURI.lastIndexOf('[') + 1, valueURI.lastIndexOf(']'));    
+            }
+            
             String selectedClass = classesList.getSelectedValue();
             
             ArrayList<String> list = controller.getSimilarIndividuals(propertyURI, value, selectedClass);

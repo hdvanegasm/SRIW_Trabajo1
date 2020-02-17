@@ -265,4 +265,36 @@ public class SparqlQuery {
                     + "}";
         }
     }
+
+    public static String getIndividualsRelationShip(String individual1, String individual2, String graph) {
+        if (graph.equals("DEFAULT")) {
+            return "SELECT ?property\n"
+                    + "WHERE {\n"
+                    + " <" + individual1 + "> ?property <" + individual2 + "> .\n"
+                    + "}";
+        } else {
+            return "SELECT ?property\n"
+                    + "FROM <" + graph + ">\n"
+                    + "WHERE {\n"
+                    + " <" + individual1 + "> ?property <" + individual2 + "> .\n"
+                    + "}";
+        }
+    }
+
+    public static String getIndividualsIndirectRelationShip(String individual1, String individual2, String graph) {
+        if (graph.equals("DEFAULT")) {
+            return "SELECT *\n"
+                    + "WHERE {\n"
+                    + " <" + individual1 + "> ?property ?thing .\n"
+                    + "?thing ?property2 <" + individual2 + "> .\n"
+                    + "}";
+        } else {
+            return "SELECT *\n"
+                    + "FROM <" + graph + ">\n"
+                    + "WHERE {\n"
+                    + " <" + individual1 + "> ?property ?thing .\n"
+                    + "?thing ?property2 <" + individual2 + "> .\n"
+                    + "}";
+        }
+    }
 }
