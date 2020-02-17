@@ -41,7 +41,7 @@ public class AttributeController extends GeneralController {
             while (resultProperties.hasNext()) {
                 QuerySolution resultIndividual = resultProperties.nextSolution();
                 lista.add(
-                    resultIndividual.getResource("?property").toString() + ": \t\t [" + resultIndividual.get("?value").toString() + "]"
+                    resultIndividual.get("?property").toString() + ":[" + resultIndividual.get("?value").toString() + "]"
                 );
             }
         }
