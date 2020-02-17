@@ -71,7 +71,7 @@ public class GeneralController {
         }
         return list;
     }
-    
+
     public ResultSet getEquivalentClasses(String uriClass) {
         String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
                 + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
@@ -80,21 +80,49 @@ public class GeneralController {
                 + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
                 + "SELECT DISTINCT ?clase_igual \n"
                 + "WHERE {\n"
-                + "	<"+ uriClass +"> owl:equivalentClass ?clase_igual .\n"
+                + "	<" + uriClass + "> owl:equivalentClass ?clase_igual .\n"
                 + "}";
-        
+
         return this.executeQueryToIntegration(query);
     }
 
-    public void getAttributeFromClass(String entity) {
+    public ArrayList<String> getAttributesFromClass(String entity) {
+        ArrayList<String> attributes = new ArrayList<>();
+        ResultSet resultQuery = null;
+        if (entity.contains("concesionario.owl")) {
+            String query = SparqlQuery.getAttributesFromClassQuery(entity, "http://35.224.217.230:8890/ontologies/concesionario");
+            resultQuery = this.executeQueryToEndPoint(query, "http://35.224.217.230:8890/sparql");
 
+        } else if (entity.contains("resource/vocab")) {
+            String query = SparqlQuery.getAttributesFromClassQuery(entity, "DEFAULT");
+            try {
+                resultQuery = this.executeQueryToEndPoint(query, "http://sriw-trabajo1-d2r.herokuapp.com/sparql");
+            } catch (Exception ex) {
+                System.out.println("Error de conexion con servidor D2R");
+            }
+        } else if (entity.contains("dbpedia")) {
+            String query = SparqlQuery.getAttributesFromClassQuery(entity, "DEFAULT");
+            resultQuery = this.executeQueryToEndPoint(query, "http://dbpedia.org/sparql");
+        } else {
+            String query = SparqlQuery.getAttributesFromClassQuery(entity, "http://35.224.217.230:8890/ontologies/concesionario.rdf");
+            resultQuery = this.executeQueryToEndPoint(query, "http://35.224.217.230:8890/sparql");
+        }
+
+        if (resultQuery != null) {
+            while (resultQuery.hasNext()) {
+                QuerySolution resultIndividual = resultQuery.nextSolution();
+                attributes.add(resultIndividual.getResource("atributo").toString());
+            }
+        }
+        System.out.println(attributes);
+        return attributes;
     }
 
     public ArrayList<String> getInstancesFromClass(String entity) {
-        
+
         ResultSet sameClases = getEquivalentClasses(entity);
         ArrayList<String> individualsFullResult = new ArrayList<>();
-        
+
         while (sameClases.hasNext()) {
             System.out.println("--------------------------------------------------");
 
@@ -104,7 +132,7 @@ public class GeneralController {
             if (individualResult.contains("concesionario.owl")) {
                 String query = SparqlQuery.getIndividualFromClassQuery(individualResult, "http://35.224.217.230:8890/ontologies/concesionario");
                 resultQuery = this.executeQueryToEndPoint(query, "http://35.224.217.230:8890/sparql");
-                
+
             } else if (individualResult.contains("resource/vocab")) {
                 String query = SparqlQuery.getIndividualFromClassQuery(individualResult, "DEFAULT");
                 try {
@@ -121,17 +149,27 @@ public class GeneralController {
             }
 
             if (resultQuery != null) {
-               while(resultQuery.hasNext()) {
-                   QuerySolution resultIndividual = resultQuery.nextSolution();
-                   individualsFullResult.add(resultIndividual.getResource("individual").toString());
-               }
-            }            
+                while (resultQuery.hasNext()) {
+                    QuerySolution resultIndividual = resultQuery.nextSolution();
+                    individualsFullResult.add(resultIndividual.getResource("individual").toString());
+                }
+            }
         }
-        
+
         return individualsFullResult;
     }
+    
+    public ResultSet getEquivalentProperties(String uriProperty) {
+        String query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                + "SELECT DISTINCT ?propiedad_igual \n"
+                + "WHERE {\n"
+                + "	<" + uriProperty + "> owl:equivalentProperty ?propiedad_igual .\n"
+                + "}";
 
-    public void getAttributesFromInstance(String instance) {
-
+        return this.executeQueryToIntegration(query);
     }
 }

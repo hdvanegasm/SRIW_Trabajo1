@@ -69,6 +69,7 @@ public class IndividualsGUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextArea4 = new javax.swing.JTextArea();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -129,6 +130,8 @@ public class IndividualsGUI extends javax.swing.JFrame {
         jTextArea4.setRows(5);
         jScrollPane4.setViewportView(jTextArea4);
 
+        jCheckBox1.setText("Indirect");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -155,7 +158,9 @@ public class IndividualsGUI extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 757, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(247, 247, 247)
+                                        .addGap(52, 52, 52)
+                                        .addComponent(jCheckBox1)
+                                        .addGap(102, 102, 102)
                                         .addComponent(jButton1))))
                             .addComponent(jScrollPane5)
                             .addComponent(jScrollPane3)
@@ -172,7 +177,9 @@ public class IndividualsGUI extends javax.swing.JFrame {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jCheckBox1))
                 .addGap(24, 24, 24)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -198,10 +205,22 @@ public class IndividualsGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        jTextArea2.setText("");
+        jTextArea3.setText("");
+        jTextArea4.setText("");
+        
         IndividualController controller = new IndividualController();
 
         String selectedClass = jComboBox1.getSelectedItem().toString();
-        ArrayList<String> individuals = controller.getInstancesFromClass(selectedClass);
+        
+        ArrayList<String> individuals = new ArrayList<>();
+        
+        if(jCheckBox1.isSelected()) {
+            individuals = controller.getIndirectInstancesFromClass(selectedClass);
+        } else {
+            individuals = controller.getInstancesFromClass(selectedClass);
+        }
+        
 
         DefaultListModel modelList = new DefaultListModel();
         for (String individual : individuals) {
@@ -286,6 +305,7 @@ public class IndividualsGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
