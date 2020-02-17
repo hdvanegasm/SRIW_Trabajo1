@@ -41,8 +41,6 @@ public class AttributeGUI extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         attributesList = new javax.swing.JList<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Same Attribute Query");
 
@@ -73,7 +71,6 @@ public class AttributeGUI extends javax.swing.JFrame {
         jLabel4.setText("Attributes:");
 
         findOtherEntities.setText("Find Similar Individuals");
-        findOtherEntities.setActionCommand("Find Similar Individuals");
         findOtherEntities.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 findOtherEntitiesActionPerformed(evt);
@@ -91,7 +88,7 @@ public class AttributeGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(371, 371, 371)
                 .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(42, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,13 +205,7 @@ public class AttributeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_findOtherEntitiesActionPerformed
 
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AttributeGUI().setVisible(true);
-            }
-        });
-    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> attributesList;

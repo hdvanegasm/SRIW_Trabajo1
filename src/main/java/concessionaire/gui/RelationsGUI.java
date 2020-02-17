@@ -45,8 +45,6 @@ public class RelationsGUI extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         instancesList1 = new javax.swing.JList<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Relations Query");
 
@@ -241,13 +239,6 @@ public class RelationsGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_findRelationActionPerformed
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new RelationsGUI().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> classesList1;
