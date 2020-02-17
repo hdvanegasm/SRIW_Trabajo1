@@ -197,7 +197,7 @@ public class SparqlQuery {
         }
     }
 
-    public static String countInstancesWithValue(String property, String graph, String type) {
+    public static String instanceStatisticsQuery(String property, String graph, String type) {
         if (graph.equals("DEFAULT")) {
             if (type.equals("numeric")) {
                 return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -215,7 +215,7 @@ public class SparqlQuery {
                         + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
                         + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
                         + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
-                        + "SELECT (COUNT(?individual) AS ?cantidad)\n"
+                        + "SELECT (COUNT(?individual) AS ?cantidad) (AVG(STRLEN(?value)) as ?promedio_longitud) \n"
                         + "WHERE {\n"
                         + "	?individual <" + property + "> ?value .\n"
                         + "}";
@@ -238,10 +238,64 @@ public class SparqlQuery {
                         + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
                         + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
                         + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
-                        + "SELECT (COUNT(?individual) AS ?cantidad) \n"
+                        + "SELECT (COUNT(?individual) AS ?cantidad) (AVG(STRLEN(?value)) as ?promedio_longitud) \n"
                         + "FROM <" + graph + ">\n"
                         + "WHERE {\n"
                         + "	?individual <" + property + "> ?value .\n"
+                        + "}";
+            }
+        }
+    }
+    
+    public static String instanceFilterStatisticsQuery(String property, String graph, String type, String numericFilter, String stringFilter) {
+        if (graph.equals("DEFAULT")) {
+            if (type.equals("numeric")) {
+                return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                        + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                        + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                        + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                        + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                        + "SELECT (COUNT(?individual) AS ?cantidad) (MIN(?value) as ?minimo) (MAX(?value) as ?maximo) (AVG(?value) as ?promedio) \n"
+                        + "WHERE {\n"
+                        + "	?individual <" + property + "> ?value .\n"
+                        + "	FILTER(?value " + numericFilter +")\n"
+                        + "}";
+            } else {
+                return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                        + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                        + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                        + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                        + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                        + "SELECT (COUNT(?individual) AS ?cantidad) (AVG(STRLEN(?value)) as ?promedio_longitud) \n"
+                        + "WHERE {\n"
+                        + "	?individual <" + property + "> ?value .\n"
+                        + "	FILTER REGEX(?value, \"" + stringFilter + "\")\n"
+                        + "}";
+            }
+        } else {
+            if (type.equals("numeric")) {
+                return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                        + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                        + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                        + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                        + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                        + "SELECT (COUNT(?individual) AS ?cantidad) (MIN(?value) as ?minimo) (MAX(?value) as ?maximo) (AVG(?value) as ?promedio) \n"
+                        + "FROM <" + graph + ">\n"
+                        + "WHERE {\n"
+                        + "	?individual <" + property + "> ?value .\n"
+                        + "	FILTER(?value " + numericFilter +").\n"
+                        + "}";
+            } else {
+                return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+                        + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                        + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                        + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                        + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                        + "SELECT (COUNT(?individual) AS ?cantidad) (AVG(STRLEN(?value)) as ?promedio_longitud) \n"
+                        + "FROM <" + graph + ">\n"
+                        + "WHERE {\n"
+                        + "	?individual <" + property + "> ?value .\n"
+                        + "	FILTER REGEX(?value, \"" + stringFilter + "\")\n"
                         + "}";
             }
         }
