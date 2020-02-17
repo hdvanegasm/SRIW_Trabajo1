@@ -89,7 +89,7 @@ public class StatisticsController extends GeneralController {
             if (resultQuery != null) {
                 while (resultQuery.hasNext()) {
                     QuerySolution resultIndividual = resultQuery.nextSolution();
-                    System.out.println(resultIndividual);
+                    System.out.println(resultIndividual.get("?noExiste"));
                     System.out.println(resultIndividual.get("?cantidad").asLiteral().getInt());
                     conteo += resultIndividual.get("?cantidad").asLiteral().getInt();
                 }
