@@ -171,8 +171,7 @@ public class SparqlQuery {
                     + "}";
         }
     }
-    
-    
+
     public static String getTypeAttributeFromClassQuery(String attribute, String graph) {
         if (graph.equals("DEFAULT")) {
             return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -200,53 +199,70 @@ public class SparqlQuery {
 
     public static String countInstancesWithValue(String property, String graph, String type) {
         if (graph.equals("DEFAULT")) {
-            if(type.equals("numeric")) {
+            if (type.equals("numeric")) {
                 return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-                    + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-                    + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-                    + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-                    + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
-                    + "SELECT (COUNT(?individual) AS ?cantidad) (MIN(?value) as ?minimo) (MAX(?value) as ?maximo) (AVG(?value) as ?promedio) \n"
-                    + "WHERE {\n"
-                    + "	?individual <" + property + "> ?value .\n"
-                    + "}";
+                        + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                        + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                        + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                        + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                        + "SELECT (COUNT(?individual) AS ?cantidad) (MIN(?value) as ?minimo) (MAX(?value) as ?maximo) (AVG(?value) as ?promedio) \n"
+                        + "WHERE {\n"
+                        + "	?individual <" + property + "> ?value .\n"
+                        + "}";
             } else {
                 return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-                    + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-                    + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-                    + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-                    + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
-                    + "SELECT (COUNT(?individual) AS ?cantidad)\n"
-                    + "WHERE {\n"
-                    + "	?individual <" + property + "> ?value .\n"
-                    + "}";
+                        + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                        + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                        + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                        + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                        + "SELECT (COUNT(?individual) AS ?cantidad)\n"
+                        + "WHERE {\n"
+                        + "	?individual <" + property + "> ?value .\n"
+                        + "}";
             }
-            
-            
         } else {
-            if(type.equals("numeric")) {
+            if (type.equals("numeric")) {
                 return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-                    + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-                    + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-                    + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-                    + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
-                    + "SELECT (COUNT(?individual) AS ?cantidad) (MIN(?value) as ?minimo) (MAX(?value) as ?maximo) (AVG(?value) as ?promedio) \n"
-                    + "FROM <" + graph + ">\n"
-                    + "WHERE {\n"
-                    + "	?individual <" + property + "> ?value .\n"
-                    + "}";
+                        + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                        + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                        + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                        + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                        + "SELECT (COUNT(?individual) AS ?cantidad) (MIN(?value) as ?minimo) (MAX(?value) as ?maximo) (AVG(?value) as ?promedio) \n"
+                        + "FROM <" + graph + ">\n"
+                        + "WHERE {\n"
+                        + "	?individual <" + property + "> ?value .\n"
+                        + "}";
             } else {
                 return "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-                    + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
-                    + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
-                    + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-                    + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
-                    + "SELECT (COUNT(?individual) AS ?cantidad) \n"
+                        + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+                        + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+                        + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
+                        + "PREFIX onto: <https://sriw-trabajo1-ontologies.herokuapp.com/ontologies/concesionario.owl/>\n"
+                        + "SELECT (COUNT(?individual) AS ?cantidad) \n"
+                        + "FROM <" + graph + ">\n"
+                        + "WHERE {\n"
+                        + "	?individual <" + property + "> ?value .\n"
+                        + "}";
+            }
+        }
+    }
+
+    public static String getIndividualWithSameValueQuery(String propertyURI, String value, String entity, String graph) {
+        if (graph.equals("DEFAULT")) {
+            return "SELECT ?individual\n"
+                    + "WHERE {\n"
+                    + "	?individual a <" + entity + "> .\n"
+                    + "	?individual <" + propertyURI + "> ?value.\n"
+                    + "	FILTER REGEX( str(?value), '" + value + "') .\n"
+                    + "}";
+        } else {
+            return "SELECT ?individual\n"
                     + "FROM <" + graph + ">\n"
                     + "WHERE {\n"
-                    + "	?individual <" + property + "> ?value .\n"
+                    + "	?individual a <" + entity + "> .\n"
+                    + "	?individual <" + propertyURI + "> ?value.\n"
+                    + "	FILTER REGEX( str(?value), '" + value + "') .\n"
                     + "}";
-            }
         }
     }
 }
